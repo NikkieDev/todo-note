@@ -12,11 +12,11 @@ void menu()
 	int major = 0x0;
 	int minor = 0x1;
 	// 3 * 16 = 48 bytes
-	const char menu[3][0x10] = {"1) Add item", "2) View list", "3) Exit"};
+	const char menu[3][0x10] = {"Add item", "View list", "Exit"};
 
 	printf("Welcome to TodoList V%d.%d\n", major, minor);
 	for (size_t i = 0; i < sizeof(menu) / sizeof(menu[0]); i++) {
-		printf("%s\n", menu[i]);
+		printf("%lu) %s\n", i+1, menu[i]);
 	}
 }
 
