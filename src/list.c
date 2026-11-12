@@ -96,13 +96,13 @@ size_t list_size(char **l, size_t cap)
 void list_item_delete(char **list, size_t cap)
 {
 	list_view(list, cap);
-	size_t size = list_size(list, cap);
+	size_t size = list_size(list, cap); // get item count
 
 	char message[32];
-	snprintf(message, sizeof(message), "Delete item [1-%lu]: ", size);
+	snprintf(message, sizeof(message), "Delete item [1-%lu]: ", size); // Load string into message (pointer to block of 32 bytes)
 
 	int deleteIdx = get_digit(message);
-	while (0 >= deleteIdx || cap <= deleteIdx) {
+	while (0 >= deleteIdx || cap <= deleteIdx) { // must be between or equal to 1 and/or cap
 		deleteIdx = get_digit(message);
 	}
 	
@@ -111,9 +111,12 @@ void list_item_delete(char **list, size_t cap)
 	// make sure to save the pointer before zero-ing it's value
 	char *freedSlot = list[deleteIdx];
 	freedSlot[0] = '\0'; // Set value at address to null terminator. Ending the string early (Value is not removed, just ended early)
+	// The data isn't deleted, and the memory block still exists. We just tell the system the string has length 0.
+	// Then we move the position of the pointer to that memory block to the end of our "List".
+	// That way, it becomes our definition of "empty" and the block can be overwritten when necessary
 	for (size_t i = deleteIdx; i < cap - 1; i++) {
 		list[i] = list[i + 1]; // Shift all items to the left. Setting current to next.
 	}
 
-	list[cap - 1] = freedSlot; 
+	list[cap - 1] = freedSlot; // Make sure we append the "empty" pointer.
 }
