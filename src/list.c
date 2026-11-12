@@ -2,12 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <cpuid.h>
 
 #include "file_operations.h"
 #include "list.h"
 #include "input.h"
+#include "output.h"
 
-void list_item_add(char l[][128], size_t cap)
+void list_item_add(char **l, size_t cap)
 {
 	size_t pos = 0;
 	while (pos < cap && l[pos][0] != '\0') {
@@ -25,7 +27,7 @@ void list_item_add(char l[][128], size_t cap)
 	strcpy(l[pos], line);
 }
 
-void list_load(char l[][128], size_t cap, FILE *f)
+void list_load(char **l, size_t cap, FILE *f)
 {
 	size_t bytes = file_get_size(f);
 
@@ -59,7 +61,7 @@ void list_load(char l[][128], size_t cap, FILE *f)
 	}
 }
 
-void list_save(char l[][128], size_t cap)
+void list_save(char **l, size_t cap)
 {
 	FILE *f = fopen("data.txt", "w");
 
@@ -74,4 +76,44 @@ void list_save(char l[][128], size_t cap)
 	}
 
 	fclose(f);
+}
+
+void list_view(char **l, size_t cap)
+{
+	printf("\n\n====== START LIST ======\n");
+	out_numbered_list(l, cap);
+	printf("====== ENDOF LIST ======\n\n");
+}
+
+size_t list_size(char **l, size_t cap)
+{
+	size_t i = 0;
+	while (i < cap && l[i][0] != '\0') { i++; }
+
+	return i;
+}
+
+void list_item_delete(char **list, size_t cap)
+{
+	list_view(list, cap);
+	size_t size = list_size(list, cap);
+
+	char message[32];
+	snprintf(message, sizeof(message), "Delete item [1-%lu]: ", size);
+
+	int deleteIdx = get_digit(message);
+	while (0 >= deleteIdx || cap <= deleteIdx) {
+		deleteIdx = get_digit(message);
+	}
+	
+	deleteIdx--;
+	
+	// make sure to save the pointer before zero-ing it's value
+	char *freedSlot = list[deleteIdx];
+	freedSlot[0] = '\0'; // Set value at address to null terminator. Ending the string early (Value is not removed, just ended early)
+	for (size_t i = deleteIdx; i < cap - 1; i++) {
+		list[i] = list[i + 1]; // Shift all items to the left. Setting current to next.
+	}
+
+	list[cap - 1] = freedSlot; 
 }
