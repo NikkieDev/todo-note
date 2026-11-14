@@ -8,6 +8,22 @@
 #include "list.h"
 #include "input.h"
 #include "output.h"
+#include "memory.h"
+
+// char * or char whatever[16] are both just a pointer to a starting address, with the possibility of an offset.
+// whatever[16] says "I point to a block of 16 bytes". char * says "I point to a block of memory."
+// That's why char * requires malloc. You need to give it a memory block to point at.
+// Array's don't exist. You point to a starting address, and you can use an offset to go further in the "array"
+// Thats why 2[arr] is as valid as arr[2]. You're just grabbing starting address + 2, or 2 + starting address.
+// whatever[16] doesn't really have a pointer, you are actually working directly with the value.
+// But whatever[0] just points at the value stored at the starting address.
+// I love CPU's
+
+static void list_free(List *list)
+{
+	free(list->storage);
+	free(list->items);
+}
 
 static void item_add(List *list, char *item)
 {
