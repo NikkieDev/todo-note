@@ -27,8 +27,7 @@ static void list_free(List *list)
 
 static void item_add(List *list, char *item)
 {
-	strcpy(list->storage[list->count], item);
-	list->items[list->count] = list->storage[list->count];
+	strcpy(list->items[list->count], item);
 	list->count++;
 }
 
@@ -117,7 +116,7 @@ void list_item_delete(List *list)
 		list->items[i] = list->items[i+1]; // Shift all items to the left. Setting current to next.
 	}
 
-	list->items[list->count-1] = freedSlot;
+	list->items[--list->count] = freedSlot;
 	// Make sure we append the "empty" pointer. By setting it to the position of the last existing element
 	// because the last element was never overwritten by a next item being moved back.
 	// So we write to it's place
