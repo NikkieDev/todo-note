@@ -28,7 +28,7 @@ int main(void)
 	}
 
 	size_t bytes = file_get_size(f);
-	if (10000000 <= bytes) { // Don't allow more than 10mb
+	if (1000000 <= bytes) { // Don't allow more than 1mb
 		printf("File too large, please reset\n");
 		exit(FILE_TOO_LARGE_ERROR);
 	}
@@ -39,16 +39,6 @@ int main(void)
 	// Just like an integer is just an address holding a number.
 	list_init(&list, 20);
 	list_load(&list, f);
-
-	// define a list of items
-	// and a list that points to each address 
-	char storage[20][128] = {0};
-	char *l[20];
-	for (size_t i = 0; i < 20; i++) {
-		l[i] = storage[i];
-	}
-	size_t capacity = sizeof(l)/sizeof(l[0]);
-
 	fclose(f);
 
 	int choice = 0;
