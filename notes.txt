@@ -1,0 +1,4 @@
+For some reason only 126 bytes are saved
+128 are available. 128,[127] = \n
+127,[126] should be end of line.
+I'm missing a byte. And this is WITH an added (non-sensical!) +1 on the buf[bytes]

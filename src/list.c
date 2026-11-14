@@ -54,8 +54,6 @@ void list_load(List *list, FILE *f)
 	size_t bytes = file_get_size(f);
 
 	char buf[bytes+1];
-	buf[bytes] = '\0';
-
 	size_t bRead = fread(buf, sizeof(char), bytes, f);
 
 	char line[128] = {0};
@@ -68,15 +66,15 @@ void list_load(List *list, FILE *f)
 			return;
 		}
 
-		line[lineCounter++] = buf[i];
-
-		if ('\n' == buf[i]) {
-			line[lineCounter-1] = '\0';
+		if ('\n' == buf[i]) { // Because char is never added to line and line is nullified, no need to set a null terminator.
 			item_add(list, line);
-
 			memset(line, 0, sizeof(line));
 			lineCounter = 0;
+
+			continue;
 		}
+
+		line[lineCounter++] = buf[i];
 	}
 
 	if (lineCounter > 0 && listCounter < list->capacity) {
