@@ -24,6 +24,7 @@ int main(void)
 	FILE *f = fopen("data.txt", "r");
 
 	if (!f) {
+		printf("Unable to open file\n");
 		exit(FILE_READ_ERROR);
 	}
 

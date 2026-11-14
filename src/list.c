@@ -78,6 +78,10 @@ void list_load(List *list, FILE *f)
 			lineCounter = 0;
 		}
 	}
+
+	if (lineCounter > 0 && listCounter < list->capacity) {
+		item_add(list, line);
+	}
 }
 
 void list_item_add(List *list)
