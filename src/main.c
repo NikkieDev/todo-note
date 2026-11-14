@@ -33,6 +33,15 @@ int main(void)
 		exit(FILE_TOO_LARGE_ERROR);
 	}
 
+	List list;
+	// pass the address of list.
+	// Pointers are just an address holding another address.
+	// Just like an integer is just an address holding a number.
+	list_init(&list, 20);
+	list_load(&list, f);
+
+	// define a list of items
+	// and a list that points to each address 
 	char storage[20][128] = {0};
 	char *l[20];
 	for (size_t i = 0; i < 20; i++) {
@@ -40,7 +49,6 @@ int main(void)
 	}
 	size_t capacity = sizeof(l)/sizeof(l[0]);
 
-	list_load(l, capacity, f);
 	fclose(f);
 
 	int choice = 0;
@@ -51,15 +59,15 @@ int main(void)
 		printf("Selected: %d\n", choice);
 
 		if (1 == choice) {
-			list_item_add(l, capacity);
+			list_item_add(&list);
 		} else if (2 == choice) {
-			list_item_delete(l, capacity);
+			list_item_delete(&list);
 		} else if (3 == choice) {
-			list_view(l, capacity);
+			list_view(list);
 		}
 	}
 
-	list_save(l, capacity);
+	list_save(list);
 
 	return 0;
 }
