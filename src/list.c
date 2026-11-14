@@ -57,11 +57,10 @@ void list_load(List *list, FILE *f)
 	size_t bRead = fread(buf, sizeof(char), bytes, f);
 
 	char line[128] = {0};
-	int listCounter = 0;
 	int lineCounter = 0;
 
 	for (size_t i = 0; i < bRead; i++) {
-		if (listCounter == list->capacity || lineCounter == sizeof(line)-1) {
+		if (list->count == list->capacity || lineCounter == sizeof(line)-1) {
 			printf("File is not valid. List or lines are too large\n");
 			return;
 		}
@@ -77,7 +76,7 @@ void list_load(List *list, FILE *f)
 		line[lineCounter++] = buf[i];
 	}
 
-	if (lineCounter > 0 && listCounter < list->capacity) {
+	if (lineCounter > 0 && list->count < list->capacity) {
 		item_add(list, line);
 	}
 }
