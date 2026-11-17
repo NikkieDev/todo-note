@@ -22,7 +22,7 @@ void menu()
 
 int main(int argc, char **argv)
 {
-	FILE *f = fopen("data.txt", "r");
+	FILE *f = fopen("./data.txt", "r");
 
 	if (!f) {
 		printf("Unable to open file\n");

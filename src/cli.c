@@ -18,7 +18,7 @@ int cli_start(int argc, char **argv)
 	}
 	body[strlen(body)] = '\n';
 
-	FILE *f = fopen("data.txt", "a");
+	FILE *f = fopen("./data.txt", "a");
 	if (!f) {
 		return 1;
 	}
