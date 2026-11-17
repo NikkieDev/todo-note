@@ -125,7 +125,7 @@ void list_item_delete(List *list)
 
 void list_save(List *list)
 {
-	FILE *f = fopen("data.txt", "w");
+	FILE *f = fopen("/home/nikkie/.local/share/todo-note/data.txt", "w");
 
 	if (!f) {
 		exit(FILE_READ_ERROR);
