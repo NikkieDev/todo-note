@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <cpuid.h>
 
 #include "file_operations.h"
 #include "list.h"
@@ -87,6 +86,7 @@ void list_item_add(List *list)
 		return;
 	}
 
+	printf("Add item: ");
 	char line[128] = {0};
 	fgets(line, 128, stdin);
 	line[strcspn(line, "\n")] = '\0'; // strcspn = Get amount of characters before second arg. Simply put: Get index of second arg.
@@ -98,7 +98,7 @@ void list_item_delete(List *list)
 	list_view(*list);
 
 	char message[32];
-	snprintf(message, sizeof(message), "Delete item [1-%lu]: ", list->count-1); // Load string into message (pointer to block of 32 bytes)
+	snprintf(message, sizeof(message), "Delete item [1-%lu]: ", list->count); // Load string into message (pointer to block of 32 bytes)
 	
 	int deleteIdx = get_digit(message);
 	while (0 >= deleteIdx || list->count < deleteIdx) {
@@ -123,7 +123,7 @@ void list_item_delete(List *list)
 
 }
 
-void list_save(List list)
+void list_save(List *list)
 {
 	FILE *f = fopen("data.txt", "w");
 
@@ -131,12 +131,13 @@ void list_save(List list)
 		exit(FILE_READ_ERROR);
 	}
 
-	for (size_t i = 0; i < list.capacity; i++) {
-		if (list.items[i][0] == '\0') break;
-		fprintf(f, "%s\n", list.items[i]);
+	for (size_t i = 0; i < list->count; i++) { // should loop over count
+		if (list->items[i][0] == '\0') break;
+		fprintf(f, "%s\n", list->items[i]);
 	}
 
 	fclose(f);
+	list_free(list);
 }
 
 void list_view(List list)

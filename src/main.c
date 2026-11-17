@@ -58,7 +58,7 @@ int main(void)
 		}
 	}
 
-	list_save(list);
+	list_save(&list);
 
 	return 0;
 }
