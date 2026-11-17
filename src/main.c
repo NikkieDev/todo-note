@@ -7,19 +7,20 @@
 #include "list.h"
 #include "input.h"
 #include "output.h"
+#include "cli.h"
 
 void menu()
 {
-	int major = 0x0;
-	int minor = 0x1;
+	int major = 0x1;
+	int minor = 0x0;
 	char *menu[4] = {"Add item", "Delete item", "View list", "Exit"};
 	char **p = menu;
 
-	printf("Welcome to TodoList V%d.%d\n", major, minor);
+	printf("Welcome to TodoList v%d.%d\n", major, minor);
 	out_numbered_list(p, 4);
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
 	FILE *f = fopen("data.txt", "r");
 
@@ -32,6 +33,10 @@ int main(void)
 	if (1000000 <= bytes) { // Don't allow more than 1mb
 		printf("File too large, please reset\n");
 		exit(FILE_TOO_LARGE_ERROR);
+	}
+
+	if (2 <= argc) {
+		return cli_start(argc, argv);
 	}
 
 	List list;
